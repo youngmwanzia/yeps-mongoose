@@ -49,13 +49,33 @@ config/default.json
     
     require('yeps-mongoose');
     
+    const mongoose = require('mongoose');
+    
+    const { Schema } = mongoose;
+    
     app.all([
         error(),
         logger()
     ]);
     
+    const UserSchema = new Schema({
+      name: {
+        type: String,
+        required: [true, 'Name is required.'],
+      },
+    });
+    
+    const User = mongoose.model('user', UserSchema);
+    
     app.then(async ctx => {
-        const rows = await ctx.mongoose.query('select * from users;');
+        const test = new User({ name: 'Test' });
+        await test.save();
+        
+        const users = await User.find({ name: 'Test' });
+        
+        const user = await User.findOne({ _id: test._id });
+        
+        await test.remove();
     });
     
 
