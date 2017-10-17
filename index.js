@@ -1,4 +1,4 @@
-const debug = require('debug')('yeps:mysql');
+const debug = require('debug')('yeps:mongoose');
 const mongoose = require('mongoose');
 const config = require('config');
 
