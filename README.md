@@ -32,20 +32,21 @@ YEPS Promise based Mongoose client
 config/default.json
 
     {
-        "mongoose": {
-             "uri": "mongodb://localhost/test",
-             "parameters": {
-                 "useMongoClient": true
-             }
-         }
+      "mongoose": {
+        "uri": "mongodb://localhost/test",
+        "parameters": {
+          "useMongoClient": true
+        }
+      }
     }
 
 ### Middleware
 
     const App = require('yeps');
-    const app = new App();
+    
     const error = require('yeps-error');
     const logger = require('yeps-logger');
+    const server = require('yeps-server');
     
     require('yeps-mongoose');
     
@@ -53,9 +54,11 @@ config/default.json
     
     const { Schema } = mongoose;
     
+    const app = new App();
+    
     app.all([
         error(),
-        logger()
+        logger(),
     ]);
     
     const UserSchema = new Schema({
@@ -69,6 +72,7 @@ config/default.json
     
     app.then(async ctx => {
         const test = new User({ name: 'Test' });
+        
         await test.save();
         
         const users = await User.find({ name: 'Test' });
@@ -78,8 +82,13 @@ config/default.json
         await test.remove();
     });
     
+    server.createHttpServer(app);
+    
+
+#### [YEPS documentation](http://yeps.info/)
 
 
-* [YEPS documentation](http://yeps.info/)
+#### Dependencies:
+
 * [Mongoose](http://mongoosejs.com/) - elegant mongodb object modeling for node.js
 * [config](https://github.com/lorenwest/node-config) - node.js config
