@@ -1,4 +1,3 @@
-require('..');
 const App = require('yeps');
 const srv = require('yeps-server');
 const error = require('yeps-error');
