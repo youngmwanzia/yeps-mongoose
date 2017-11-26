@@ -29,7 +29,7 @@ YEPS Promise based Mongoose client
 
 ### Config
 
-config/default.json
+#### config/default.json
 
     {
       "mongoose": {
@@ -46,13 +46,8 @@ config/default.json
     
     const error = require('yeps-error');
     const logger = require('yeps-logger');
+    
     const server = require('yeps-server');
-    
-    require('yeps-mongoose');
-    
-    const mongoose = require('mongoose');
-    
-    const { Schema } = mongoose;
     
     const app = new App();
     
@@ -61,28 +56,47 @@ config/default.json
         logger(),
     ]);
     
+    app.then(async (ctx) => {
+      const { Schema } = ctx.mongoose;
+        
+      const UserSchema = new Schema({
+        name: {
+          type: String,
+          required: [true, 'Name is required.'],
+        },
+      });
+        
+      const User = mongoose.model('user', UserSchema);
+          
+      const test = new User({ name: 'Test' });
+        
+      await test.save();
+        
+      const users = await User.find({ name: 'Test' });
+        
+      const user = await User.findOne({ _id: test._id });
+        
+      await test.remove();
+    });
+    
+    server.createHttpServer(app);
+    
+### Module
+
+    const mongoose = require('yeps-mongoose/mongoose');
+    
+    const { Schema } = mongoose;
+    
     const UserSchema = new Schema({
       name: {
         type: String,
         required: [true, 'Name is required.'],
       },
     });
-    
+        
     const User = mongoose.model('user', UserSchema);
     
-    app.then(async ctx => {
-        const test = new User({ name: 'Test' });
-        
-        await test.save();
-        
-        const users = await User.find({ name: 'Test' });
-        
-        const user = await User.findOne({ _id: test._id });
-        
-        await test.remove();
-    });
-    
-    server.createHttpServer(app);
+    module.exports = User;
     
 
 #### [YEPS documentation](http://yeps.info/)

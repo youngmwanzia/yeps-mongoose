@@ -1,8 +1,7 @@
 const debug = require('debug')('yeps:mongoose');
-const mongoose = require('mongoose');
-const config = require('config');
+const mongoose = require('./mongoose');
 
-debug(config.mongoose);
-
-mongoose.connect(config.mongoose.uri, config.mongoose.parameters);
-mongoose.Promise = global.Promise;
+module.exports = () => (ctx) => {
+  debug('Adding mongoose to context...');
+  ctx.mongoose = mongoose;
+};
