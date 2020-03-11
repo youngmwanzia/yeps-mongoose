@@ -1,0 +1,70 @@
+{
+  "name": "yeps-mongoose",
+  "version": "1.0.0",
+  "description": "YEPS Mongoose connector",
+  "main": "index.js",
+  "scripts": {
+    "lint": "npm-run-all lint:**",
+    "lint:js": "eslint index.js tests",
+    "test": "npm-run-all test:**",
+    "test:db:start": "npm run db:start",
+    "test:db:preparing": "node -e \"setTimeout(()=>1, 1000)\"",
+    "test:code": "mocha tests --recursive",
+    "test:coverage": "istanbul cover _mocha -- tests --recursive",
+    "test:db:stop": "npm run db:stop",
+    "report": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
+    "clear": "rimraf coverage",
+    "precommit": "npm run lint && npm test",
+    "prepush": "npm run lint && npm test",
+    "db:start": "docker run -d --name mongo -p 27017:27017 mongo",
+    "db:stop": "docker rm -f mongo"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/youngmwanzia/yeps.mongoose.git"
+  },
+  "keywords": [
+    "promise",
+    "http",
+    "server",
+    "rest",
+    "fast",
+    "async",
+    "await",
+    "https",
+    "ssl",
+    "easy",
+    "mongoose",
+    "mongo"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "config": "^1.26.2",
+    "debug": "^3.1.0",
+    "mongoose": "^4.12.2",
+    "npm-run-all": "^4.1.1"
+  },
+  "files": [
+    "index.js"
+  ],
+  "engines": {
+    "node": ">=7.6.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "coveralls": "^3.0.9",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.1",
+    "husky": "^4.2.3",
+    "istanbul": "^1.1.0-alpha.1",
+    "mocha": "^7.1.0",
+    "mocha-lcov-reporter": "^1.3.0",
+    "rimraf": "^3.0.2",
+    "yeps": "^1.1.1",
+    "yeps-error": "^1.3.1",
+    "yeps-server": "^1.1.3"
+  }
+}
